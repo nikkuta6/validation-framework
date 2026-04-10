@@ -1,24 +1,27 @@
 package by.pranovich.validationframework.demo;
 
 import by.pranovich.validationframework.core.ValidationError;
-import by.pranovich.validationframework.core.Validator;
+import by.pranovich.validationframework.handlers.NotNullHandler;
+import by.pranovich.validationframework.handlers.ValidationHandler;
 import by.pranovich.validationframework.model.User;
+import by.pranovich.validationframework.validator.Validator;
 
 import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        User user = new User(null, "123");
+        User user = new User("Nikita", null);
+        user.greet();
 
-        Validator validator = new Validator();
+        ValidationHandler handler = new NotNullHandler();
+        Validator validator = new Validator(handler);
+
         List<ValidationError> errors = validator.validate(user);
 
         if (errors.isEmpty()) {
-            System.out.println("Object is valid.");
+            System.out.println("User is valid");
         } else {
-            for (ValidationError error : errors) {
-                System.out.println(error);
-            }
+            errors.forEach(System.out::println);
         }
     }
 }
