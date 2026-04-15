@@ -1,6 +1,5 @@
 package by.pranovich.validationframework.annotations;
 
-import java.beans.Transient;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

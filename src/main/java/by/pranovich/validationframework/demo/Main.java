@@ -1,7 +1,9 @@
 package by.pranovich.validationframework.demo;
 
 import by.pranovich.validationframework.core.ValidationError;
+import by.pranovich.validationframework.handlers.EmailHandler;
 import by.pranovich.validationframework.handlers.NotNullHandler;
+import by.pranovich.validationframework.handlers.SizeHandler;
 import by.pranovich.validationframework.handlers.ValidationHandler;
 import by.pranovich.validationframework.model.User;
 import by.pranovich.validationframework.validator.Validator;
@@ -10,11 +12,15 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        User user = new User("Nikita", null);
-        user.greet();
+        User user = new User("Ni", null);
 
-        ValidationHandler handler = new NotNullHandler();
-        Validator validator = new Validator(handler);
+        ValidationHandler notNullHandler = new NotNullHandler();
+        ValidationHandler emailHandler = new EmailHandler();
+        ValidationHandler sizeHandler = new SizeHandler();
+
+        notNullHandler.linkWith(emailHandler).linkWith(sizeHandler);
+
+        Validator validator = new Validator(notNullHandler);
 
         List<ValidationError> errors = validator.validate(user);
 

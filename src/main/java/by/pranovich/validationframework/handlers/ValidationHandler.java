@@ -5,8 +5,6 @@ import by.pranovich.validationframework.core.ValidationError;
 import java.lang.reflect.Field;
 import java.util.List;
 
-import javax.management.RuntimeErrorException;
-
 public abstract class ValidationHandler {
     private ValidationHandler next;
 

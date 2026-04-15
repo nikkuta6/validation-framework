@@ -9,5 +9,6 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 public @interface Min {
     long value();
+
     String message() default "Field is less than minimum!";
 }
