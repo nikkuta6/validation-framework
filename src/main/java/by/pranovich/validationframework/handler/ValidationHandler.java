@@ -1,6 +1,6 @@
-package by.pranovich.validationframework.handlers;
+package by.pranovich.validationframework.handler;
 
-import by.pranovich.validationframework.core.ValidationError;
+import by.pranovich.validationframework.core.ValidationIssue;
 
 import java.lang.reflect.Field;
 import java.util.List;
@@ -13,15 +13,15 @@ public abstract class ValidationHandler {
         return next;
     }
 
-    public void handle(Field field, Object target, List<ValidationError> errors) {
-        validate(field, target, errors);
+    public void handle(Field field, Object target, List<ValidationIssue> issues) {
+        validate(field, target, issues);
 
         if (next != null) {
-            next.handle(field, target, errors);
+            next.handle(field, target, issues);
         }
     }
 
-    protected abstract void validate(Field field, Object target, List<ValidationError> errors);
+    protected abstract void validate(Field field, Object target, List<ValidationIssue> issues);
 
     protected Object getFieldValue(Field field, Object target) {
         field.setAccessible(true);

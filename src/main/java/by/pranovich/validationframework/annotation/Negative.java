@@ -1,4 +1,4 @@
-package by.pranovich.validationframework.annotations;
+package by.pranovich.validationframework.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,6 +7,6 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-public @interface Email {
-    String message() default "Incorrect email!";
+public @interface Negative {
+  String message() default "Field must be a negative number!";
 }

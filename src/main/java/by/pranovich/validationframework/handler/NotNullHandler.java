@@ -1,7 +1,7 @@
-package by.pranovich.validationframework.handlers;
+package by.pranovich.validationframework.handler;
 
-import by.pranovich.validationframework.annotations.NotNull;
-import by.pranovich.validationframework.core.ValidationError;
+import by.pranovich.validationframework.annotation.NotNull;
+import by.pranovich.validationframework.core.ValidationIssue;
 
 import java.lang.reflect.Field;
 import java.util.List;
@@ -9,7 +9,7 @@ import java.util.List;
 public class NotNullHandler extends ValidationHandler {
 
     @Override
-    protected void validate(Field field, Object target, List<ValidationError> errors) {
+    protected void validate(Field field, Object target, List<ValidationIssue> issues) {
         if (!field.isAnnotationPresent(NotNull.class)) {
             return;
         }
@@ -18,7 +18,7 @@ public class NotNullHandler extends ValidationHandler {
         NotNull annotation = field.getAnnotation(NotNull.class);
 
         if (value == null) {
-            errors.add(new ValidationError(field.getName(), annotation.message()));
+            issues.add(new ValidationIssue(field.getName(), annotation.message()));
         }
     }
 }

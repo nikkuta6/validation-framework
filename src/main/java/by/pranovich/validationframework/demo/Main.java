@@ -1,33 +1,27 @@
 package by.pranovich.validationframework.demo;
 
-import by.pranovich.validationframework.core.ValidationError;
-import by.pranovich.validationframework.handlers.EmailHandler;
-import by.pranovich.validationframework.handlers.NotNullHandler;
-import by.pranovich.validationframework.handlers.SizeHandler;
-import by.pranovich.validationframework.handlers.ValidationHandler;
+import by.pranovich.validationframework.core.ValidationIssue;
+import by.pranovich.validationframework.factory.ValidationHandlerChainFactory;
+import by.pranovich.validationframework.handler.ValidationHandler;
 import by.pranovich.validationframework.model.User;
-import by.pranovich.validationframework.validator.Validator;
+import by.pranovich.validationframework.validator.ObjectFieldValidator;
 
 import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        User user = new User("Ni", null);
+        User user = new User(23, "Nikita", "nik123@gmail.com",
+                new String[] { "football", "programming", "music", "traveling", "cooking" });
 
-        ValidationHandler notNullHandler = new NotNullHandler();
-        ValidationHandler emailHandler = new EmailHandler();
-        ValidationHandler sizeHandler = new SizeHandler();
+        ValidationHandler handler = ValidationHandlerChainFactory.createDefaultChain();
+        ObjectFieldValidator validator = new ObjectFieldValidator(handler);
 
-        notNullHandler.linkWith(emailHandler).linkWith(sizeHandler);
+        List<ValidationIssue> issues = validator.validate(user);
 
-        Validator validator = new Validator(notNullHandler);
-
-        List<ValidationError> errors = validator.validate(user);
-
-        if (errors.isEmpty()) {
-            System.out.println("User is valid");
+        if (issues.isEmpty()) {
+            System.out.println("User data is correct!");
         } else {
-            errors.forEach(System.out::println);
+            issues.forEach(System.out::println);
         }
     }
 }

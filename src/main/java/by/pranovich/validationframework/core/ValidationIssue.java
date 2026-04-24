@@ -1,10 +1,10 @@
 package by.pranovich.validationframework.core;
 
-public class ValidationError {
+public class ValidationIssue {
     private final String fieldName;
     private final String message;
 
-    public ValidationError(String fieldName, String message) {
+    public ValidationIssue(String fieldName, String message) {
         this.fieldName = fieldName;
         this.message = message;
     }

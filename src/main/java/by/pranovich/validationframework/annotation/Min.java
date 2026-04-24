@@ -1,4 +1,4 @@
-package by.pranovich.validationframework.annotations;
+package by.pranovich.validationframework.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,6 +7,8 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-public @interface NotNull {
-    String message() default "Field can't be null!";
+public @interface Min {
+    long value();
+
+    String message() default "Field is less than minimum!";
 }

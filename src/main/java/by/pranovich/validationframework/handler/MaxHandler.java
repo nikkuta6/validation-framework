@@ -1,14 +1,14 @@
-package by.pranovich.validationframework.handlers;
+package by.pranovich.validationframework.handler;
 
-import by.pranovich.validationframework.annotations.Max;
-import by.pranovich.validationframework.core.ValidationError;
+import by.pranovich.validationframework.annotation.Max;
+import by.pranovich.validationframework.core.ValidationIssue;
 
 import java.lang.reflect.Field;
 import java.util.List;
 
 public class MaxHandler extends ValidationHandler {
     @Override
-    protected void validate(Field field, Object target, List<ValidationError> errors) {
+    protected void validate(Field field, Object target, List<ValidationIssue> issues) {
         if (!field.isAnnotationPresent(Max.class)) {
             return;
         }
@@ -21,11 +21,11 @@ public class MaxHandler extends ValidationHandler {
         }
 
         if (!(value instanceof Number number)) {
-            errors.add(new ValidationError(field.getName(), "Annotation @Max can be applied only to numeric fields"));
+            issues.add(new ValidationIssue(field.getName(), "Annotation @Max can be applied only to numeric fields"));
             return;
         }
         if (number.doubleValue() > annotation.value()) {
-            errors.add(new ValidationError(field.getName(), annotation.message()));
+            issues.add(new ValidationIssue(field.getName(), annotation.message()));
         }
     }
 }

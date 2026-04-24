@@ -1,4 +1,4 @@
-package by.pranovich.validationframework.handlers;
+package by.pranovich.validationframework.handler;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
@@ -6,13 +6,13 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import by.pranovich.validationframework.annotations.Size;
-import by.pranovich.validationframework.core.ValidationError;
+import by.pranovich.validationframework.annotation.Size;
+import by.pranovich.validationframework.core.ValidationIssue;
 
 public class SizeHandler extends ValidationHandler {
 
     @Override
-    protected void validate(Field field, Object target, List<ValidationError> errors) {
+    protected void validate(Field field, Object target, List<ValidationIssue> issues) {
         if (!field.isAnnotationPresent(Size.class)) {
             return;
         }
@@ -26,14 +26,14 @@ public class SizeHandler extends ValidationHandler {
 
         int size = getSize(value);
         if (size < 0) {
-            errors.add(new ValidationError(
+            issues.add(new ValidationIssue(
                     field.getName(),
-                    "Annotation @Size can be applied only to CharSequence, array, Collection, or Map fields"));
+                    "Annotation @Size can be applied only to CharSequence, Array, Collection, or Map fields"));
             return;
         }
 
         if (size < annotation.min() || size > annotation.max()) {
-            errors.add(new ValidationError(field.getName(), annotation.message()));
+            issues.add(new ValidationIssue(field.getName(), annotation.message()));
         }
     }
 

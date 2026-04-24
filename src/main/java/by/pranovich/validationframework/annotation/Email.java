@@ -1,4 +1,4 @@
-package by.pranovich.validationframework.annotations;
+package by.pranovich.validationframework.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,8 +7,6 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-public @interface Max {
-    long value();
-
-    String message() default "Field is more than maximum!";
+public @interface Email {
+    String message() default "Incorrect email!";
 }
