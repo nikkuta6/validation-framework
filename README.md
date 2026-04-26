@@ -19,6 +19,7 @@
 - Сборка цепочки обработчиков через `ValidationHandlerChainFactory`.
 - Возврат списка ошибок в виде объектов `ValidationIssue`.
 - Демонстрационный пример в `by.pranovich.validationframework.demo.Main`.
+- Unit-тесты для обработчиков аннотаций и `ObjectFieldValidator`.
 
 ## Структура проекта
 
@@ -87,9 +88,27 @@ List<ValidationIssue> issues = validator.validate(user);
 3. В обработчике проверить наличие своей аннотации через `field.isAnnotationPresent(...)`.
 4. Добавить обработчик в цепочку в `ValidationHandlerChainFactory`.
 
+## Тестирование
+
+Тесты написаны на JUnit 5 и находятся в `src/test/java`.
+
+Для каждого обработчика есть отдельный тестовый класс:
+
+- `NotNullHandlerTest`
+- `EmailHandlerTest`
+- `MinHandlerTest`
+- `MaxHandlerTest`
+- `SizeHandlerTest`
+- `PatternHandlerTest`
+- `PositiveHandlerTest`
+- `NegativeHandlerTest`
+
+`ObjectFieldValidatorTest` проверяет поведение самого валидатора. Общие вспомогательные методы для тестов
+обработчиков вынесены в `HandlerTestSupport`.
+
 ## Запуск
 
-Сборка и проверка проекта:
+Сборка проекта и запуск всех тестов:
 
 ```bash
 mvn clean test
@@ -103,5 +122,5 @@ java -cp target/classes by.pranovich.validationframework.demo.Main
 
 ## Текущий статус
 
-Все основные обработчики подключены в стандартную цепочку. Следующий полезный шаг для проекта -
-добавить unit-тесты для каждого handler-а и для `ObjectFieldValidator`.
+Все основные обработчики подключены в стандартную цепочку. Для каждого handler-а добавлен отдельный
+unit-тест, а `ObjectFieldValidator` покрыт собственным тестовым классом.
