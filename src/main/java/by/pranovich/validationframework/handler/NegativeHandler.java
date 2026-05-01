@@ -21,7 +21,7 @@ public class NegativeHandler extends ValidationHandler {
     }
 
     if (!(value instanceof Number number)) {
-      issues.add(new ValidationIssue(field.getName(), "Field must be a number!"));
+      issues.add(new ValidationIssue(field.getName(), "@Negative can be applied only to numeric fields"));
       return;
     }
 

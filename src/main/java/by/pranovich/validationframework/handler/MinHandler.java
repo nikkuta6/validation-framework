@@ -22,7 +22,7 @@ public class MinHandler extends ValidationHandler {
     }
 
     if (!(value instanceof Number number)) {
-      issues.add(new ValidationIssue(field.getName(), "Annotation @Min can be applied only to numeric fields"));
+      issues.add(new ValidationIssue(field.getName(), "@Min can be applied only to numeric fields"));
       return;
     }
 

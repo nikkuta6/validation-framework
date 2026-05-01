@@ -21,14 +21,15 @@ public class PatternHandler extends ValidationHandler {
       return;
     }
 
-    if (!(value instanceof String)) {
-      issues.add(new ValidationIssue(field.getName(), "Annotation @Pattern can be applied only to String fields"));
+    if (!(value instanceof CharSequence text)) {
+      issues
+          .add(new ValidationIssue(field.getName(), "annotation @Pattern can be applied only to CharSequence fields"));
       return;
     }
 
-    if (!value.toString().matches(annotation.regex())) {
+    if (!text.toString().matches(annotation.regex())) {
       issues
-          .add(new ValidationIssue(field.getName(), annotation.message() + annotation.regex()));
+          .add(new ValidationIssue(field.getName(), annotation.message()));
     }
   }
 }
