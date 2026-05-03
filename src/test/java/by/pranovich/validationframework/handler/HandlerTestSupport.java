@@ -1,5 +1,6 @@
 package by.pranovich.validationframework.handler;
 
+import by.pranovich.validationframework.core.ValidationContext;
 import by.pranovich.validationframework.core.ValidationIssue;
 
 import java.lang.reflect.Field;
@@ -12,7 +13,8 @@ abstract class HandlerTestSupport {
 
     protected List<ValidationIssue> validateField(ValidationHandler handler, Object target, String fieldName) {
         List<ValidationIssue> issues = new ArrayList<>();
-        handler.handle(getField(target, fieldName), target, issues);
+        ValidationContext context = new ValidationContext(getField(target, fieldName), target, issues);
+        handler.handle(context);
         return issues;
     }
 

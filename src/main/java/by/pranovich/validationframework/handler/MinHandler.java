@@ -1,33 +1,30 @@
 package by.pranovich.validationframework.handler;
 
-import java.lang.reflect.Field;
-import java.util.List;
-
 import by.pranovich.validationframework.annotation.Min;
-import by.pranovich.validationframework.core.ValidationIssue;
+import by.pranovich.validationframework.core.ValidationContext;
 
 public class MinHandler extends ValidationHandler {
 
-  @Override
-  protected void validate(Field field, Object target, List<ValidationIssue> issues) {
-    if (!field.isAnnotationPresent(Min.class)) {
-      return;
-    }
+    @Override
+    protected void validate(ValidationContext context) {
+        if (!context.hasAnnotation(Min.class)) {
+            return;
+        }
 
-    Object value = getFieldValue(field, target);
-    Min annotation = field.getAnnotation(Min.class);
+        Object value = context.getValue();
+        Min annotation = context.getAnnotation(Min.class);
 
-    if (value == null) {
-      return;
-    }
+        if (value == null) {
+            return;
+        }
 
-    if (!(value instanceof Number number)) {
-      issues.add(new ValidationIssue(field.getName(), "@Min can be applied only to numeric fields"));
-      return;
-    }
+        if (!(value instanceof Number number)) {
+            context.addIssue("@Min can be applied only to numeric fields");
+            return;
+        }
 
-    if (number.doubleValue() < annotation.value()) {
-      issues.add(new ValidationIssue(field.getName(), annotation.message()));
+        if (number.doubleValue() < annotation.value()) {
+            context.addIssue(annotation.message());
+        }
     }
-  }
 }

@@ -20,7 +20,7 @@ class ValidationTest {
 
         assertEquals(1, issues.size());
         assertEquals("name", issues.get(0).getFieldName());
-        assertEquals("Field can't be null!", issues.get(0).getMessage());
+        assertEquals("field must not be null", issues.get(0).getMessage());
         assertFalse(validator.isValid(new SampleUser(null)));
     }
 

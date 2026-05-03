@@ -1,5 +1,6 @@
 package by.pranovich.validationframework.validator;
 
+import by.pranovich.validationframework.core.ValidationContext;
 import by.pranovich.validationframework.core.ValidationIssue;
 import by.pranovich.validationframework.handler.ValidationHandler;
 
@@ -27,7 +28,8 @@ public class ObjectFieldValidator implements Validator {
         Field[] fields = target.getClass().getDeclaredFields();
 
         for (Field field : fields) {
-            handlerChain.handle(field, target, issues);
+            ValidationContext context = new ValidationContext(field, target, issues);
+            handlerChain.handle(context);
         }
 
         return issues;

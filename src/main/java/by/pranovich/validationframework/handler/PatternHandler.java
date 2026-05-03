@@ -1,35 +1,30 @@
 package by.pranovich.validationframework.handler;
 
-import java.lang.reflect.Field;
-import java.util.List;
-
 import by.pranovich.validationframework.annotation.Pattern;
-import by.pranovich.validationframework.core.ValidationIssue;
+import by.pranovich.validationframework.core.ValidationContext;
 
 public class PatternHandler extends ValidationHandler {
 
-  @Override
-  protected void validate(Field field, Object target, List<ValidationIssue> issues) {
-    if (!field.isAnnotationPresent(Pattern.class)) {
-      return;
-    }
+    @Override
+    protected void validate(ValidationContext context) {
+        if (!context.hasAnnotation(Pattern.class)) {
+            return;
+        }
 
-    Object value = getFieldValue(field, target);
-    Pattern annotation = field.getAnnotation(Pattern.class);
+        Object value = context.getValue();
+        Pattern annotation = context.getAnnotation(Pattern.class);
 
-    if (value == null) {
-      return;
-    }
+        if (value == null) {
+            return;
+        }
 
-    if (!(value instanceof CharSequence text)) {
-      issues
-          .add(new ValidationIssue(field.getName(), "annotation @Pattern can be applied only to CharSequence fields"));
-      return;
-    }
+        if (!(value instanceof CharSequence text)) {
+            context.addIssue("annotation @Pattern can be applied only to CharSequence fields");
+            return;
+        }
 
-    if (!text.toString().matches(annotation.regex())) {
-      issues
-          .add(new ValidationIssue(field.getName(), annotation.message()));
+        if (!text.toString().matches(annotation.regex())) {
+            context.addIssue(annotation.message());
+        }
     }
-  }
 }

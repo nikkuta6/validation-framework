@@ -267,7 +267,7 @@ message = "validated object is null!"
 ```text
 by.pranovich.validationframework
 |-- annotation   # Аннотации валидации
-|-- core         # ValidationIssue
+|-- core         # ValidationIssue и ValidationContext
 |-- exception    # ValidationException
 |-- factory      # Сборка стандартной цепочки обработчиков
 |-- handler      # Обработчики аннотаций
@@ -284,15 +284,16 @@ by.pranovich.validationframework
 | `ValidationHandler` | Базовый класс обработчиков в цепочке. |
 | `ValidationHandlerChainFactory` | Создаёт стандартную цепочку обработчиков. |
 | `ValidationIssue` | Описывает одну найденную ошибку. |
+| `ValidationContext` | Передаёт обработчикам поле, объект и общий список ошибок. |
 | `ValidationException` | Runtime-исключение для внутренних ошибок фреймворка. |
 
 ## Как Работает Цепочка
 
 1. `Validation.defaultValidator()` создаёт `ObjectFieldValidator`.
 2. `ObjectFieldValidator` получает поля объекта через reflection.
-3. Для каждого поля запускается цепочка `ValidationHandler`.
+3. Для каждого поля создаётся `ValidationContext` и запускается цепочка `ValidationHandler`.
 4. Каждый обработчик проверяет только свою аннотацию.
-5. Найденные ошибки добавляются в общий `List<ValidationIssue>`.
+5. Найденные ошибки добавляются в общий `List<ValidationIssue>` через `context.addIssue(...)`.
 
 Стандартная цепочка включает обработчики:
 
@@ -322,29 +323,31 @@ Validator validator = new ObjectFieldValidator(chain);
 2. Добавьте `@Retention(RetentionPolicy.RUNTIME)` и `@Target(ElementType.FIELD)`.
 3. Создайте обработчик в пакете `by.pranovich.validationframework.handler`.
 4. Унаследуйте обработчик от `ValidationHandler`.
-5. В `validate(...)` проверьте наличие своей аннотации через `field.isAnnotationPresent(...)`.
-6. При ошибке добавьте `new ValidationIssue(field.getName(), message)`.
+5. В `validate(ValidationContext context)` проверьте наличие своей аннотации через `context.hasAnnotation(...)`.
+6. Получите значение поля через `context.getValue()` и добавьте ошибку через `context.addIssue(message)`.
 7. Подключите новый обработчик в `ValidationHandlerChainFactory`.
 
 Минимальный пример обработчика:
 
 ```java
+import by.pranovich.validationframework.core.ValidationContext;
+
 public class CustomHandler extends ValidationHandler {
     @Override
-    protected void validate(Field field, Object target, List<ValidationIssue> issues) {
-        if (!field.isAnnotationPresent(Custom.class)) {
+    protected void validate(ValidationContext context) {
+        if (!context.hasAnnotation(Custom.class)) {
             return;
         }
 
-        Object value = getFieldValue(field, target);
-        Custom annotation = field.getAnnotation(Custom.class);
+        Object value = context.getValue();
+        Custom annotation = context.getAnnotation(Custom.class);
 
         if (value == null) {
             return;
         }
 
         if (/* value is invalid */) {
-            issues.add(new ValidationIssue(field.getName(), annotation.message()));
+            context.addIssue(annotation.message());
         }
     }
 }

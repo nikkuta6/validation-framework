@@ -1,10 +1,6 @@
 package by.pranovich.validationframework.handler;
 
-import by.pranovich.validationframework.core.ValidationIssue;
-import by.pranovich.validationframework.exception.ValidationException;
-
-import java.lang.reflect.Field;
-import java.util.List;
+import by.pranovich.validationframework.core.ValidationContext;
 
 public abstract class ValidationHandler {
     private ValidationHandler next;
@@ -14,24 +10,13 @@ public abstract class ValidationHandler {
         return next;
     }
 
-    public void handle(Field field, Object target, List<ValidationIssue> issues) {
-        validate(field, target, issues);
+    public void handle(ValidationContext context) {
+        validate(context);
 
         if (next != null) {
-            next.handle(field, target, issues);
+            next.handle(context);
         }
     }
 
-    protected abstract void validate(Field field, Object target, List<ValidationIssue> issues);
-
-    protected Object getFieldValue(Field field, Object target) {
-        field.setAccessible(true);
-        try {
-            return field.get(target);
-        } catch (IllegalAccessException e) {
-            throw new ValidationException(
-                    "Unable to read field '" + field.getName() + "' from " + target.getClass().getName(),
-                    e);
-        }
-    }
+    protected abstract void validate(ValidationContext context);
 }

@@ -19,7 +19,7 @@ class ObjectFieldValidatorTest {
         List<ValidationIssue> issues = validator.validate(null);
 
         assertEquals(1, issues.size());
-        assertHasIssue(issues, "object", "Validated object is null!");
+        assertHasIssue(issues, "object", "validated object is null!");
     }
 
     @Test
