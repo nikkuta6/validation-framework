@@ -1,29 +1,30 @@
 package by.pranovich.validationframework.handler;
 
-import by.pranovich.validationframework.annotation.Pattern;
+import by.pranovich.validationframework.annotation.NotBlank;
 import by.pranovich.validationframework.core.ValidationContext;
 
-public class PatternHandler extends ValidationHandler {
+public class NotBlankHandler extends ValidationHandler {
 
     @Override
     protected void validate(ValidationContext context) {
-        if (!context.hasAnnotation(Pattern.class)) {
+        if (!context.hasAnnotation(NotBlank.class)) {
             return;
         }
 
         Object value = context.getValue();
-        Pattern annotation = context.getAnnotation(Pattern.class);
+        NotBlank annotation = context.getAnnotation(NotBlank.class);
 
         if (value == null) {
+            context.addIssue(annotation.message());
             return;
         }
 
         if (!(value instanceof CharSequence text)) {
-            context.addIssue("@Pattern can be applied only to CharSequence fields");
+            context.addIssue("@NotBlank can be applied only to CharSequence fields");
             return;
         }
 
-        if (!text.toString().matches(annotation.regex())) {
+        if (text.toString().isBlank()) {
             context.addIssue(annotation.message());
         }
     }

@@ -19,7 +19,7 @@ class SizeHandlerTest extends HandlerTestSupport {
         List<ValidationIssue> issues = validateField(handler, target, "name");
 
         assertEquals(1, issues.size());
-        assertHasIssue(issues, "name", "Name length must be between 2 and 4");
+        assertHasIssue(issues, "name", "name length must be between 2 and 4");
     }
 
     @Test
@@ -32,7 +32,7 @@ class SizeHandlerTest extends HandlerTestSupport {
     }
 
     private static class NameField {
-        @Size(min = 2, max = 4, message = "Name length must be between 2 and 4")
+        @Size(min = 2, max = 4, message = "name length must be between 2 and 4")
         private final String name;
 
         private NameField(String name) {

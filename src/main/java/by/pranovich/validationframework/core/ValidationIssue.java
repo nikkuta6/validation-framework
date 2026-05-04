@@ -20,7 +20,7 @@ public class ValidationIssue {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("Field: ").append(fieldName).append(". Error: ").append(message);
+        sb.append("field: ").append(fieldName).append(". error: ").append(message);
         return sb.toString();
     }
 }

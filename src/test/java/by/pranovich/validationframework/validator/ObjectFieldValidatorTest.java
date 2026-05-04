@@ -19,7 +19,7 @@ class ObjectFieldValidatorTest {
         List<ValidationIssue> issues = validator.validate(null);
 
         assertEquals(1, issues.size());
-        assertHasIssue(issues, "object", "validated object is null!");
+        assertHasIssue(issues, "object", "validated object is null");
     }
 
     @Test
@@ -35,6 +35,6 @@ class ObjectFieldValidatorTest {
         assertTrue(
                 issues.stream().anyMatch(issue ->
                         issue.getFieldName().equals(fieldName) && issue.getMessage().equals(message)),
-                "Expected issue for field '" + fieldName + "' with message '" + message + "'");
+                "expected issue for field '" + fieldName + "' with message '" + message + "'");
     }
 }

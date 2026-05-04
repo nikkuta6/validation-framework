@@ -21,7 +21,7 @@ public class ObjectFieldValidator implements Validator {
         List<ValidationIssue> issues = new ArrayList<>();
 
         if (target == null) {
-            issues.add(new ValidationIssue("object", "validated object is null!"));
+            issues.add(new ValidationIssue("object", "validated object is null"));
             return issues;
         }
 

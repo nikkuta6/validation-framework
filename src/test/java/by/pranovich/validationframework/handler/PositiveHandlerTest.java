@@ -19,7 +19,7 @@ class PositiveHandlerTest extends HandlerTestSupport {
         List<ValidationIssue> issues = validateField(handler, target, "number");
 
         assertEquals(1, issues.size());
-        assertHasIssue(issues, "number", "Number must be positive");
+        assertHasIssue(issues, "number", "number must be positive");
     }
 
     @Test
@@ -32,7 +32,7 @@ class PositiveHandlerTest extends HandlerTestSupport {
     }
 
     private static class PositiveNumberField {
-        @Positive(message = "Number must be positive")
+        @Positive(message = "number must be positive")
         private final int number;
 
         private PositiveNumberField(int number) {

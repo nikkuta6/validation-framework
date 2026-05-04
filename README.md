@@ -31,31 +31,37 @@ mvn clean package
 
 ```java
 import by.pranovich.validationframework.annotation.Email;
-import by.pranovich.validationframework.annotation.Max;
-import by.pranovich.validationframework.annotation.Min;
-import by.pranovich.validationframework.annotation.NotNull;
+import by.pranovich.validationframework.annotation.NotBlank;
+import by.pranovich.validationframework.annotation.NotEmpty;
 import by.pranovich.validationframework.annotation.Pattern;
+import by.pranovich.validationframework.annotation.Range;
 import by.pranovich.validationframework.annotation.Size;
 
+import java.util.List;
+
 public class User {
-    @NotNull(message = "name is required")
+    @NotBlank(message = "name must not be blank")
     @Size(min = 2, max = 30, message = "name length must be between 2 and 30")
     private final String name;
 
+    @NotBlank(message = "email must not be blank")
     @Email(message = "email must be valid")
     private final String email;
 
-    @Min(value = 18, message = "age must be at least 18")
-    @Max(value = 120, message = "age must be at most 120")
+    @Range(min = 18, max = 120, message = "age must be between 18 and 120")
     private final int age;
+
+    @NotEmpty(message = "roles must not be empty")
+    private final List<String> roles;
 
     @Pattern(regex = "^[A-Z]{2}-\\d{4}$", message = "code has invalid format")
     private final String code;
 
-    public User(String name, String email, int age, String code) {
+    public User(String name, String email, int age, List<String> roles, String code) {
         this.name = name;
         this.email = email;
         this.age = age;
+        this.roles = roles;
         this.code = code;
     }
 }
@@ -72,7 +78,7 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        User user = new User(null, "wrong-email", 15, "bad-code");
+        User user = new User(" ", "wrong-email", 15, List.of(), "bad-code");
 
         Validator validator = Validation.defaultValidator();
         List<ValidationIssue> issues = validator.validate(user);
@@ -119,16 +125,25 @@ String message = issue.getMessage();
 
 `fieldName` содержит имя поля, на котором найдена ошибка. `message` содержит сообщение из аннотации или служебное сообщение фреймворка.
 
+`toString()` возвращает строку в формате:
+
+```text
+field: name. error: field must not be null
+```
+
 ## Поддерживаемые Аннотации
 
 Все аннотации применяются к полям и доступны во время выполнения программы.
 
 | Аннотация | Поддерживаемый тип | Описание |
 | --- | --- | --- |
-| `@NotNull` | любой ссылочный тип | Значение поля не должно быть `null`. |
+| `@NotNull` | любой тип | Значение поля не должно быть `null`. |
+| `@NotBlank` | `CharSequence` | Значение не должно быть `null`, пустым или состоять только из пробельных символов. |
+| `@NotEmpty` | `CharSequence`, массив, `Collection`, `Map` | Значение не должно быть `null` или пустым. |
 | `@Size` | `CharSequence`, массив, `Collection`, `Map` | Размер должен быть в диапазоне от `min` до `max` включительно. |
 | `@Pattern` | `CharSequence` | Значение должно соответствовать регулярному выражению. |
 | `@Email` | `String` | Значение должно быть строкой с email-адресом допустимого формата. |
+| `@Range` | `Number` | Число должно быть в диапазоне от `min` до `max` включительно. |
 | `@Min` | `Number` | Число должно быть больше или равно указанному минимуму. |
 | `@Max` | `Number` | Число должно быть меньше или равно указанному максимуму. |
 | `@Positive` | `Number` | Число должно быть строго больше нуля. |
@@ -147,6 +162,30 @@ String message = issue.getMessage();
 | Параметр | По умолчанию | Описание |
 | --- | --- | --- |
 | `message` | `"field must not be null"` | Сообщение, если значение равно `null`. |
+
+### `@NotBlank`
+
+```java
+@NotBlank(message = "field must not be blank")
+```
+
+Параметры:
+
+| Параметр | По умолчанию | Описание |
+| --- | --- | --- |
+| `message` | `"field must not be blank"` | Сообщение, если значение равно `null`, пустое или состоит только из пробельных символов. |
+
+### `@NotEmpty`
+
+```java
+@NotEmpty(message = "field must not be empty")
+```
+
+Параметры:
+
+| Параметр | По умолчанию | Описание |
+| --- | --- | --- |
+| `message` | `"field must not be empty"` | Сообщение, если значение равно `null` или имеет размер `0`. |
 
 ### `@Size`
 
@@ -188,6 +227,22 @@ String message = issue.getMessage();
 | Параметр | По умолчанию | Описание |
 | --- | --- | --- |
 | `message` | `"must be a valid email"` | Сообщение, если email некорректен. |
+
+### `@Range`
+
+```java
+@Range(min = 18, max = 120, message = "must be within range")
+```
+
+Параметры:
+
+| Параметр | По умолчанию | Описание |
+| --- | --- | --- |
+| `min` | нет | Минимальное допустимое значение. |
+| `max` | нет | Максимальное допустимое значение. |
+| `message` | `"must be within range"` | Сообщение, если число меньше `min` или больше `max`. |
+
+Если `min > max`, фреймворк вернёт служебную ошибку конфигурации аннотации.
 
 ### `@Min`
 
@@ -241,23 +296,23 @@ String message = issue.getMessage();
 
 ## Поведение `null`
 
-`null` проверяет только `@NotNull`.
+`null` как ошибку проверяют `@NotNull`, `@NotBlank` и `@NotEmpty`.
 
-Остальные аннотации пропускают `null`, чтобы их можно было комбинировать с `@NotNull`:
+Остальные аннотации пропускают `null`, чтобы их можно было комбинировать с проверкой обязательности:
 
 ```java
-@NotNull
+@NotBlank
 @Size(min = 2, max = 30)
 private String name;
 ```
 
-Если `name == null`, будет ошибка от `@NotNull`. Проверка `@Size` не добавит дополнительную ошибку.
+Если `name == null`, будет ошибка от `@NotBlank`. Проверка `@Size` не добавит дополнительную ошибку.
 
 Если в `validator.validate(null)` передать сам объект как `null`, метод вернёт одну ошибку:
 
 ```text
 fieldName = "object"
-message = "validated object is null!"
+message = "validated object is null"
 ```
 
 ## Внутренняя Структура
@@ -271,6 +326,7 @@ by.pranovich.validationframework
 |-- exception    # ValidationException
 |-- factory      # Сборка стандартной цепочки обработчиков
 |-- handler      # Обработчики аннотаций
+|-- util         # Вспомогательные классы
 `-- validator    # Интерфейс Validator и ObjectFieldValidator
 ```
 
@@ -285,6 +341,7 @@ by.pranovich.validationframework
 | `ValidationHandlerChainFactory` | Создаёт стандартную цепочку обработчиков. |
 | `ValidationIssue` | Описывает одну найденную ошибку. |
 | `ValidationContext` | Передаёт обработчикам поле, объект и общий список ошибок. |
+| `ValueSizeResolver` | Определяет размер строк, массивов, коллекций и map для обработчиков `@Size` и `@NotEmpty`. |
 | `ValidationException` | Runtime-исключение для внутренних ошибок фреймворка. |
 
 ## Как Работает Цепочка
@@ -298,7 +355,7 @@ by.pranovich.validationframework
 Стандартная цепочка включает обработчики:
 
 ```text
-NotNull -> Pattern -> Email -> Size -> Max -> Min -> Positive -> Negative
+NotNull -> NotBlank -> NotEmpty -> Pattern -> Email -> Size -> Range -> Max -> Min -> Positive -> Negative
 ```
 
 ## Создание Валидатора Вручную
@@ -360,6 +417,7 @@ public class CustomHandler extends ValidationHandler {
 - `static` поля пока не пропускаются автоматически.
 - Числовые обработчики сравнивают значения через `doubleValue()`, поэтому для `BigDecimal`, `BigInteger`, `NaN` и бесконечностей возможны спорные случаи.
 - `@Email` использует упрощённый regex и не покрывает весь стандарт email-адресов.
+- Валидация методов, параметров методов, классовых ограничений и вложенных объектов пока не реализована.
 
 ## Команды Разработки
 

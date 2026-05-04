@@ -1,12 +1,10 @@
 package by.pranovich.validationframework.handler;
 
-import java.lang.reflect.Array;
-import java.util.Collection;
-import java.util.Map;
 import java.util.OptionalInt;
 
 import by.pranovich.validationframework.annotation.Size;
 import by.pranovich.validationframework.core.ValidationContext;
+import by.pranovich.validationframework.util.ValueSizeResolver;
 
 public class SizeHandler extends ValidationHandler {
 
@@ -34,7 +32,7 @@ public class SizeHandler extends ValidationHandler {
             return;
         }
 
-        OptionalInt size = getSize(value);
+        OptionalInt size = ValueSizeResolver.getSize(value);
         if (size.isEmpty()) {
             context.addIssue("@Size can be applied only to CharSequence, Array, Collection, or Map fields");
             return;
@@ -45,21 +43,5 @@ public class SizeHandler extends ValidationHandler {
         if (actualSize < annotation.min() || actualSize > annotation.max()) {
             context.addIssue(annotation.message());
         }
-    }
-
-    private static OptionalInt getSize(Object value) {
-        OptionalInt size = OptionalInt.empty();
-
-        if (value instanceof CharSequence cs) {
-            size = OptionalInt.of(cs.length());
-        } else if (value.getClass().isArray()) {
-            size = OptionalInt.of(Array.getLength(value));
-        } else if (value instanceof Collection<?> c) {
-            size = OptionalInt.of(c.size());
-        } else if (value instanceof Map<?, ?> m) {
-            size = OptionalInt.of(m.size());
-        }
-
-        return size;
     }
 }
