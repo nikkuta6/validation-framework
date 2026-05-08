@@ -12,5 +12,5 @@ import java.lang.annotation.Target;
 public @interface Min {
     long value();
 
-    String message() default "must be greater than or equal to minimum";
+    String message() default "Value must be greater than or equal to the minimum.";
 }

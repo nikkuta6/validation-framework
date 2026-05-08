@@ -12,5 +12,5 @@ import java.lang.annotation.Target;
 public @interface Max {
     long value();
 
-    String message() default "must be less than or equal to maximum";
+    String message() default "Value must be less than or equal to the maximum.";
 }

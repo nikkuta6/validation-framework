@@ -19,7 +19,7 @@ class MinHandlerTest extends HandlerTestSupport {
         List<ValidationIssue> issues = validateField(handler, target, "age");
 
         assertEquals(1, issues.size());
-        assertHasIssue(issues, "age", "age must be at least 18");
+        assertHasIssue(issues, "age", "Age must be at least 18.");
     }
 
     @Test
@@ -32,7 +32,7 @@ class MinHandlerTest extends HandlerTestSupport {
     }
 
     private static class AgeField {
-        @Min(value = 18, message = "age must be at least 18")
+        @Min(value = 18, message = "Age must be at least 18.")
         private final int age;
 
         private AgeField(int age) {

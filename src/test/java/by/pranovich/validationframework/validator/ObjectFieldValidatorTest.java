@@ -19,7 +19,7 @@ class ObjectFieldValidatorTest {
         List<ValidationIssue> issues = validator.validate(null);
 
         assertEquals(1, issues.size());
-        assertHasIssue(issues, "object", "validated object is null");
+        assertHasIssue(issues, "object", "Validated object must not be null.");
     }
 
     @Test
@@ -28,13 +28,13 @@ class ObjectFieldValidatorTest {
                 NullPointerException.class,
                 () -> new ObjectFieldValidator(null));
 
-        assertEquals("handlerChain must not be null", exception.getMessage());
+        assertEquals("Handler chain must not be null.", exception.getMessage());
     }
 
     private static void assertHasIssue(List<ValidationIssue> issues, String fieldName, String message) {
         assertTrue(
                 issues.stream().anyMatch(issue ->
                         issue.getFieldName().equals(fieldName) && issue.getMessage().equals(message)),
-                "expected issue for field '" + fieldName + "' with message '" + message + "'");
+                "Expected issue for field '" + fieldName + "' with message '" + message + "'");
     }
 }

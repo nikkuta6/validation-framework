@@ -19,7 +19,7 @@ class NotNullHandlerTest extends HandlerTestSupport {
         List<ValidationIssue> issues = validateField(handler, target, "name");
 
         assertEquals(1, issues.size());
-        assertHasIssue(issues, "name", "name must not be null");
+        assertHasIssue(issues, "name", "Name must not be null.");
     }
 
     @Test
@@ -32,7 +32,7 @@ class NotNullHandlerTest extends HandlerTestSupport {
     }
 
     private static class RequiredField {
-        @NotNull(message = "name must not be null")
+        @NotNull(message = "Name must not be null.")
         private final String name;
 
         private RequiredField(String name) {

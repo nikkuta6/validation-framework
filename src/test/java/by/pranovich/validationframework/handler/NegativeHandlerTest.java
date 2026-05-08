@@ -19,7 +19,7 @@ class NegativeHandlerTest extends HandlerTestSupport {
         List<ValidationIssue> issues = validateField(handler, target, "number");
 
         assertEquals(1, issues.size());
-        assertHasIssue(issues, "number", "number must be negative");
+        assertHasIssue(issues, "number", "Number must be negative.");
     }
 
     @Test
@@ -32,7 +32,7 @@ class NegativeHandlerTest extends HandlerTestSupport {
     }
 
     private static class NegativeNumberField {
-        @Negative(message = "number must be negative")
+        @Negative(message = "Number must be negative.")
         private final int number;
 
         private NegativeNumberField(int number) {

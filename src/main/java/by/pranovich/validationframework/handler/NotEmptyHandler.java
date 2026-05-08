@@ -24,7 +24,7 @@ public class NotEmptyHandler extends ValidationHandler {
 
         OptionalInt size = ValueSizeResolver.getSize(value);
         if (size.isEmpty()) {
-            context.addIssue("@NotEmpty can be applied only to CharSequence, Array, Collection, or Map fields");
+            context.addIssue("Annotation @NotEmpty can be applied only to CharSequence, array, Collection, or Map fields.");
             return;
         }
 

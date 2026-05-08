@@ -12,5 +12,5 @@ import java.lang.annotation.Target;
 public @interface Pattern {
   String regex();
 
-  String message() default "must match regex";
+  String message() default "Value must match the regular expression.";
 }

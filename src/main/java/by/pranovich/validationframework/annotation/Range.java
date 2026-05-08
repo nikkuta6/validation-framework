@@ -14,5 +14,5 @@ public @interface Range {
 
     long max();
 
-    String message() default "must be within range";
+    String message() default "Value must be within the allowed range.";
 }

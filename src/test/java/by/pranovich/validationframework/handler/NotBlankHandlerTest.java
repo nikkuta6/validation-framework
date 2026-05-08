@@ -19,7 +19,7 @@ class NotBlankHandlerTest extends HandlerTestSupport {
         List<ValidationIssue> issues = validateField(handler, target, "name");
 
         assertEquals(1, issues.size());
-        assertHasIssue(issues, "name", "name must not be blank");
+        assertHasIssue(issues, "name", "Name must not be blank.");
     }
 
     @Test
@@ -29,7 +29,7 @@ class NotBlankHandlerTest extends HandlerTestSupport {
         List<ValidationIssue> issues = validateField(handler, target, "name");
 
         assertEquals(1, issues.size());
-        assertHasIssue(issues, "name", "name must not be blank");
+        assertHasIssue(issues, "name", "Name must not be blank.");
     }
 
     @Test
@@ -48,11 +48,11 @@ class NotBlankHandlerTest extends HandlerTestSupport {
         List<ValidationIssue> issues = validateField(handler, target, "amount");
 
         assertEquals(1, issues.size());
-        assertHasIssue(issues, "amount", "@NotBlank can be applied only to CharSequence fields");
+        assertHasIssue(issues, "amount", "Annotation @NotBlank can be applied only to CharSequence fields.");
     }
 
     private static class TextField {
-        @NotBlank(message = "name must not be blank")
+        @NotBlank(message = "Name must not be blank.")
         private final String name;
 
         private TextField(String name) {

@@ -18,7 +18,7 @@ public class NegativeHandler extends ValidationHandler {
         }
 
         if (!(value instanceof Number number)) {
-            context.addIssue("@Negative can be applied only to numeric fields");
+            context.addIssue("Annotation @Negative can be applied only to numeric fields.");
             return;
         }
 

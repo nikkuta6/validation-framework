@@ -10,5 +10,5 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 public @interface NotBlank {
-    String message() default "field must not be blank";
+    String message() default "Value must not be blank.";
 }

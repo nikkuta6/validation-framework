@@ -15,7 +15,7 @@ public class RangeHandler extends ValidationHandler {
         Range annotation = context.getAnnotation(Range.class);
 
         if (annotation.min() > annotation.max()) {
-            context.addIssue("@Range annotation has invalid parameters: min should be less than or equal to max");
+            context.addIssue("Annotation @Range has invalid parameters: min must be less than or equal to max.");
             return;
         }
 
@@ -24,7 +24,7 @@ public class RangeHandler extends ValidationHandler {
         }
 
         if (!(value instanceof Number number)) {
-            context.addIssue("@Range can be applied only to numeric fields");
+            context.addIssue("Annotation @Range can be applied only to numeric fields.");
             return;
         }
 

@@ -19,7 +19,7 @@ class NotEmptyHandlerTest extends HandlerTestSupport {
         List<ValidationIssue> issues = validateField(handler, target, "name");
 
         assertEquals(1, issues.size());
-        assertHasIssue(issues, "name", "name must not be empty");
+        assertHasIssue(issues, "name", "Name must not be empty.");
     }
 
     @Test
@@ -29,7 +29,7 @@ class NotEmptyHandlerTest extends HandlerTestSupport {
         List<ValidationIssue> issues = validateField(handler, target, "name");
 
         assertEquals(1, issues.size());
-        assertHasIssue(issues, "name", "name must not be empty");
+        assertHasIssue(issues, "name", "Name must not be empty.");
     }
 
     @Test
@@ -39,7 +39,7 @@ class NotEmptyHandlerTest extends HandlerTestSupport {
         List<ValidationIssue> issues = validateField(handler, target, "tags");
 
         assertEquals(1, issues.size());
-        assertHasIssue(issues, "tags", "tags must not be empty");
+        assertHasIssue(issues, "tags", "Tags must not be empty.");
     }
 
     @Test
@@ -58,11 +58,11 @@ class NotEmptyHandlerTest extends HandlerTestSupport {
         List<ValidationIssue> issues = validateField(handler, target, "amount");
 
         assertEquals(1, issues.size());
-        assertHasIssue(issues, "amount", "@NotEmpty can be applied only to CharSequence, Array, Collection, or Map fields");
+        assertHasIssue(issues, "amount", "Annotation @NotEmpty can be applied only to CharSequence, array, Collection, or Map fields.");
     }
 
     private static class TextField {
-        @NotEmpty(message = "name must not be empty")
+        @NotEmpty(message = "Name must not be empty.")
         private final String name;
 
         private TextField(String name) {
@@ -71,7 +71,7 @@ class NotEmptyHandlerTest extends HandlerTestSupport {
     }
 
     private static class TagsField {
-        @NotEmpty(message = "tags must not be empty")
+        @NotEmpty(message = "Tags must not be empty.")
         private final List<String> tags;
 
         private TagsField(List<String> tags) {

@@ -17,12 +17,12 @@ public class SizeHandler extends ValidationHandler {
         Size annotation = context.getAnnotation(Size.class);
 
         if (annotation.min() < 0 || annotation.max() < 0) {
-            context.addIssue("@Size annotation parameters must not be negative");
+            context.addIssue("Annotation @Size parameters must not be negative.");
             return;
         }
 
         if (annotation.min() > annotation.max()) {
-            context.addIssue("@Size annotation has invalid parameters: min should be less than or equal to max");
+            context.addIssue("Annotation @Size has invalid parameters: min must be less than or equal to max.");
             return;
         }
 
@@ -34,7 +34,7 @@ public class SizeHandler extends ValidationHandler {
 
         OptionalInt size = ValueSizeResolver.getSize(value);
         if (size.isEmpty()) {
-            context.addIssue("@Size can be applied only to CharSequence, Array, Collection, or Map fields");
+            context.addIssue("Annotation @Size can be applied only to CharSequence, array, Collection, or Map fields.");
             return;
         }
 

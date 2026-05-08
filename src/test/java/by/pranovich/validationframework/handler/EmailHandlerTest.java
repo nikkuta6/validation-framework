@@ -19,7 +19,7 @@ class EmailHandlerTest extends HandlerTestSupport {
         List<ValidationIssue> issues = validateField(handler, target, "email");
 
         assertEquals(1, issues.size());
-        assertHasIssue(issues, "email", "email is invalid");
+        assertHasIssue(issues, "email", "Email must be valid.");
     }
 
     @Test
@@ -32,7 +32,7 @@ class EmailHandlerTest extends HandlerTestSupport {
     }
 
     private static class EmailField {
-        @Email(message = "email is invalid")
+        @Email(message = "Email must be valid.")
         private final String email;
 
         private EmailField(String email) {

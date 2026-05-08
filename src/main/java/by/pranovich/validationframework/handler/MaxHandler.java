@@ -18,7 +18,7 @@ public class MaxHandler extends ValidationHandler {
         }
 
         if (!(value instanceof Number number)) {
-            context.addIssue("@Max can be applied only to numeric fields");
+            context.addIssue("Annotation @Max can be applied only to numeric fields.");
             return;
         }
 

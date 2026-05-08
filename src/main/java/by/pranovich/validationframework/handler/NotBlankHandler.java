@@ -20,7 +20,7 @@ public class NotBlankHandler extends ValidationHandler {
         }
 
         if (!(value instanceof CharSequence text)) {
-            context.addIssue("@NotBlank can be applied only to CharSequence fields");
+            context.addIssue("Annotation @NotBlank can be applied only to CharSequence fields.");
             return;
         }
 

@@ -19,7 +19,7 @@ class RangeHandlerTest extends HandlerTestSupport {
         List<ValidationIssue> issues = validateField(handler, target, "age");
 
         assertEquals(1, issues.size());
-        assertHasIssue(issues, "age", "age must be between 18 and 120");
+        assertHasIssue(issues, "age", "Age must be between 18 and 120.");
     }
 
     @Test
@@ -29,7 +29,7 @@ class RangeHandlerTest extends HandlerTestSupport {
         List<ValidationIssue> issues = validateField(handler, target, "age");
 
         assertEquals(1, issues.size());
-        assertHasIssue(issues, "age", "age must be between 18 and 120");
+        assertHasIssue(issues, "age", "Age must be between 18 and 120.");
     }
 
     @Test
@@ -57,7 +57,7 @@ class RangeHandlerTest extends HandlerTestSupport {
         List<ValidationIssue> issues = validateField(handler, target, "text");
 
         assertEquals(1, issues.size());
-        assertHasIssue(issues, "text", "@Range can be applied only to numeric fields");
+        assertHasIssue(issues, "text", "Annotation @Range can be applied only to numeric fields.");
     }
 
     @Test
@@ -67,11 +67,11 @@ class RangeHandlerTest extends HandlerTestSupport {
         List<ValidationIssue> issues = validateField(handler, target, "value");
 
         assertEquals(1, issues.size());
-        assertHasIssue(issues, "value", "@Range annotation has invalid parameters: min should be less than or equal to max");
+        assertHasIssue(issues, "value", "Annotation @Range has invalid parameters: min must be less than or equal to max.");
     }
 
     private static class AgeField {
-        @Range(min = 18, max = 120, message = "age must be between 18 and 120")
+        @Range(min = 18, max = 120, message = "Age must be between 18 and 120.")
         private final int age;
 
         private AgeField(int age) {

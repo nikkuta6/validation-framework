@@ -10,5 +10,5 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 public @interface Positive {
-  String message() default "must be positive";
+  String message() default "Value must be positive.";
 }

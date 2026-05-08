@@ -13,7 +13,7 @@ public class ObjectFieldValidator implements Validator {
     private final ValidationHandler handlerChain;
 
     public ObjectFieldValidator(ValidationHandler handlerChain) {
-        this.handlerChain = Objects.requireNonNull(handlerChain, "handlerChain must not be null");
+        this.handlerChain = Objects.requireNonNull(handlerChain, "Handler chain must not be null.");
     }
 
     @Override
@@ -21,7 +21,7 @@ public class ObjectFieldValidator implements Validator {
         List<ValidationIssue> issues = new ArrayList<>();
 
         if (target == null) {
-            issues.add(new ValidationIssue("object", "validated object is null"));
+            issues.add(new ValidationIssue("object", "Validated object must not be null."));
             return issues;
         }
 

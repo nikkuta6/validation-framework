@@ -14,5 +14,5 @@ public @interface Size {
 
     int max() default Integer.MAX_VALUE;
 
-    String message() default "size is out of range";
+    String message() default "Value size must be within the allowed range.";
 }

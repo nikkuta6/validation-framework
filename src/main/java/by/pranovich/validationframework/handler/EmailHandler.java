@@ -20,7 +20,7 @@ public class EmailHandler extends ValidationHandler {
         }
 
         if (!(value instanceof String email)) {
-            context.addIssue("@Email can be applied only to String fields");
+            context.addIssue("Annotation @Email can be applied only to String fields.");
             return;
         }
 

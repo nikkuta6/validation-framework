@@ -19,7 +19,7 @@ class PatternHandlerTest extends HandlerTestSupport {
         List<ValidationIssue> issues = validateField(handler, target, "code");
 
         assertEquals(1, issues.size());
-        assertHasIssue(issues, "code", "code must match pattern");
+        assertHasIssue(issues, "code", "Code must match the pattern.");
     }
 
     @Test
@@ -32,7 +32,7 @@ class PatternHandlerTest extends HandlerTestSupport {
     }
 
     private static class CodeField {
-        @Pattern(regex = "^[A-Z]{3}$", message = "code must match pattern")
+        @Pattern(regex = "^[A-Z]{3}$", message = "Code must match the pattern.")
         private final String code;
 
         private CodeField(String code) {

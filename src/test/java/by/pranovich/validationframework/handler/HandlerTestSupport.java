@@ -22,14 +22,14 @@ abstract class HandlerTestSupport {
         assertTrue(
                 issues.stream().anyMatch(issue ->
                         issue.getFieldName().equals(fieldName) && issue.getMessage().equals(message)),
-                "expected issue for field '" + fieldName + "' with message '" + message + "'");
+                "Expected issue for field '" + fieldName + "' with message '" + message + "'");
     }
 
     private static Field getField(Object target, String fieldName) {
         try {
             return target.getClass().getDeclaredField(fieldName);
         } catch (NoSuchFieldException e) {
-            throw new IllegalArgumentException("field not found: " + fieldName, e);
+            throw new IllegalArgumentException("Field not found: " + fieldName, e);
         }
     }
 }

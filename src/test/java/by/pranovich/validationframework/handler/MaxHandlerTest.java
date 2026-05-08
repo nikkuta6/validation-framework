@@ -19,7 +19,7 @@ class MaxHandlerTest extends HandlerTestSupport {
         List<ValidationIssue> issues = validateField(handler, target, "score");
 
         assertEquals(1, issues.size());
-        assertHasIssue(issues, "score", "score must be at most 100");
+        assertHasIssue(issues, "score", "Score must be at most 100.");
     }
 
     @Test
@@ -32,7 +32,7 @@ class MaxHandlerTest extends HandlerTestSupport {
     }
 
     private static class ScoreField {
-        @Max(value = 100, message = "score must be at most 100")
+        @Max(value = 100, message = "Score must be at most 100.")
         private final int score;
 
         private ScoreField(int score) {
