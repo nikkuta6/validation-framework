@@ -29,10 +29,10 @@ class ValidationTest {
     }
 
     @Test
-    void defaultValidatorShouldIncludeNewBuiltInAnnotations() {
+    void defaultValidatorShouldValidateNotBlankNotEmptyAndRangeAnnotations() {
         Validator validator = Validation.defaultValidator();
 
-        List<ValidationIssue> issues = validator.validate(new ExtendedSampleUser(" ", List.of(), 15));
+        List<ValidationIssue> issues = validator.validate(new UserWithSeveralInvalidFields(" ", List.of(), 15));
 
         assertEquals(3, issues.size());
         assertHasIssue(issues, "name", "name must not be blank");
@@ -56,7 +56,7 @@ class ValidationTest {
         }
     }
 
-    private static class ExtendedSampleUser {
+    private static class UserWithSeveralInvalidFields {
         @NotBlank(message = "name must not be blank")
         private final String name;
 
@@ -66,7 +66,7 @@ class ValidationTest {
         @Range(min = 18, max = 120, message = "age must be between 18 and 120")
         private final int age;
 
-        private ExtendedSampleUser(String name, List<String> roles, int age) {
+        private UserWithSeveralInvalidFields(String name, List<String> roles, int age) {
             this.name = name;
             this.roles = roles;
             this.age = age;

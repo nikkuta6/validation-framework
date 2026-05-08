@@ -9,7 +9,7 @@
 - Java 21
 - Maven 3.8+
 
-## Установка
+## Сборка и подключение
 
 Проект собирается как Maven `jar`:
 
@@ -19,10 +19,26 @@
 <version>1.0.0</version>
 ```
 
-Для локальной сборки:
+Чтобы собрать библиотеку:
 
 ```bash
 mvn clean package
+```
+
+Чтобы установить её в локальный Maven-репозиторий и подключить из другого проекта:
+
+```bash
+mvn clean install
+```
+
+После этого добавьте зависимость в `pom.xml` проекта-потребителя:
+
+```xml
+<dependency>
+    <groupId>by.pranovich</groupId>
+    <artifactId>validation-framework</artifactId>
+    <version>1.0.0</version>
+</dependency>
 ```
 
 ## Быстрый Старт
@@ -91,6 +107,18 @@ public class Main {
         System.out.println("Valid: " + valid);
     }
 }
+```
+
+Пример вывода:
+
+```text
+name: name must not be blank
+name: name length must be between 2 and 30
+email: email must be valid
+age: age must be between 18 and 120
+roles: roles must not be empty
+code: code has invalid format
+Valid: false
 ```
 
 ## Основной API
@@ -418,6 +446,29 @@ public class CustomHandler extends ValidationHandler {
 - Числовые обработчики сравнивают значения через `doubleValue()`, поэтому для `BigDecimal`, `BigInteger`, `NaN` и бесконечностей возможны спорные случаи.
 - `@Email` использует упрощённый regex и не покрывает весь стандарт email-адресов.
 - Валидация методов, параметров методов, классовых ограничений и вложенных объектов пока не реализована.
+
+## Тесты
+
+Тесты лежат в стандартной Maven-директории `src/test/java`. Пакеты тестов повторяют структуру основного кода из `src/main/java`, поэтому тест проще найти рядом с проверяемым классом:
+
+```text
+src/test/java/by/pranovich/validationframework/ValidationTest.java
+src/test/java/by/pranovich/validationframework/handler/NotEmptyHandlerTest.java
+src/test/java/by/pranovich/validationframework/handler/SizeHandlerTest.java
+src/test/java/by/pranovich/validationframework/validator/ObjectFieldValidatorTest.java
+```
+
+Общее правило расположения:
+
+| Что тестируется | Где лежит тест |
+| --- | --- |
+| Публичный фасад `Validation` | `src/test/java/by/pranovich/validationframework/ValidationTest.java` |
+| Обработчик из пакета `handler` | `src/test/java/by/pranovich/validationframework/handler/*HandlerTest.java` |
+| Валидатор из пакета `validator` | `src/test/java/by/pranovich/validationframework/validator/*Test.java` |
+
+Названия тестов описывают ожидаемое поведение в формате `should...When...`, например `shouldAddIssueWhenStringIsEmpty`. Такой тест читается как предложение: "должен добавить ошибку, когда строка пустая".
+
+Для общих действий handler-тестов используется `HandlerTestSupport`: он создаёт `ValidationContext`, запускает один обработчик и возвращает список `ValidationIssue`. Благодаря этому каждый тест остаётся коротким: подготовка объекта, запуск проверки, проверка результата.
 
 ## Команды Разработки
 

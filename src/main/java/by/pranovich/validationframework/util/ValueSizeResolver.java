@@ -11,18 +11,12 @@ public final class ValueSizeResolver {
     }
 
     public static OptionalInt getSize(Object value) {
-        OptionalInt size = OptionalInt.empty();
-
-        if (value instanceof CharSequence sequence) {
-            size = OptionalInt.of(sequence.length());
-        } else if (value.getClass().isArray()) {
-            size = OptionalInt.of(Array.getLength(value));
-        } else if (value instanceof Collection<?> collection) {
-            size = OptionalInt.of(collection.size());
-        } else if (value instanceof Map<?, ?> map) {
-            size = OptionalInt.of(map.size());
-        }
-
-        return size;
+        return switch (value) {
+            case CharSequence sequence -> OptionalInt.of(sequence.length());
+            case Object array when array.getClass().isArray() -> OptionalInt.of(Array.getLength(array));
+            case Collection<?> collection -> OptionalInt.of(collection.size());
+            case Map<?, ?> map -> OptionalInt.of(map.size());
+            default -> OptionalInt.empty();
+        };
     }
 }
